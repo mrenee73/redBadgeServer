@@ -20,9 +20,11 @@ const User= db.define('user',{
         allowNull: false,
     },
     
-    admin:{
-        type: DataTypes.BOOLEAN,
+    role:{
+        type: DataTypes.ENUM,
+        values: ['user', 'admin'],
         allowNull: false,
+        defaultValue: "user"
     }
 });
 

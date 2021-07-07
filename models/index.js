@@ -5,7 +5,6 @@ const LogModel = require('./log');
 
 module.exports = {
     dbConnection: db,
-
     UserModel,
     LogModel
 };

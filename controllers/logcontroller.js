@@ -3,6 +3,8 @@ const {LogModel, UserModel} = require('../models');
 const middleware = require("../middleware");
 const Log = require('../models/log');
 const User = require('../models/user');
+const { validateSession } = require('../middleware');
+const {validateAdmin } = require('../middleware')
 
 /*
 ===============
@@ -78,7 +80,7 @@ router.get('/userInfo', async (req, res) =>{
 ====================
  */
 
-router.get("/mine/", middleware.validateSession, async(req, res) => {
+router.get("/mine/", validateSession, async(req, res) => {
     let {id} = req.user;
     try{
         const userLogs = await LogModel.findAll({
@@ -187,35 +189,33 @@ router.put("/update/:entryId", middleware.validateSession , async (req, res) => 
 Functional but not used.
 */
 
-// router.put("/adminUpdate/:entryId",  async (req, res) => {
-//     const { description, nameOfBeer, brewery, abv, ibu, style } = req.body.log;
-//     const logId = req.params.entryId;
+router.put("/admin/:entryId", validateAdmin,  async (req, res) => {
+    const { description, nameOfBeer, brewery, abv, ibu, style } = req.body.log;
+    const logId = req.params.entryId;
     
-//     const query = {
-//         where: {
-//             id: logId
-//         }
-//     };
-
-//     const updatedLog = {
-//         description, nameOfBeer, brewery, abv, ibu, style
-//     };
-
-//     try {
-//         const updateByAdmin = await LogModel.update(updatedLog, query);
-//         res.status(200).json(updateByAdmin);
-//         console.log(updatedLog, "Log Updated.");
-//     } catch (err) {
-//         res.status(500).json({ error: err});
-//     }
-// });
+    const query = {
+        where: {
+            id: logId
+        }
+    };
+    const updatedLog = {
+        description, nameOfBeer, brewery, abv, ibu, style
+    };
+    try {
+        const updateByAdmin = await LogModel.update(updatedLog, query);
+        res.status(200).json(updateByAdmin);
+        console.log(updatedLog, "Log Updated.");
+    } catch (err) {
+        res.status(500).json({ error: err});
+    }
+});
 
 /*
 =======================
 * DELETE LOGS 
 =======================
 */
-router.delete("/:id", middleware.validateSession, async(req, res) =>{
+router.delete("/:id", middleware.validateAdmin, async(req, res) =>{
     const logId = req.params.id;
     const userId = req.user.id;
 

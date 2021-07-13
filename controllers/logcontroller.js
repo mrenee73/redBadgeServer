@@ -13,7 +13,7 @@ const {validateAdmin } = require('../middleware')
 */
 
 router.post('/', middleware.validateSession, async (req, res) =>{
-    const {description, nameOfBeer, brewery, abv, ibu, style} = req.body.log;
+    const {description, nameOfBeer, brewery, abv, ibu, style, rating} = req.body.log;
     const {id} = req.user;
     const logEntry = {
         description,
@@ -22,6 +22,7 @@ router.post('/', middleware.validateSession, async (req, res) =>{
         abv, 
         ibu,
         style,
+        rating,
         userId: id
     }
     try{
@@ -52,7 +53,7 @@ Not needed.  Used the endpoint with database association instead.
 
 /**
 ============================
-* GET ALL LOGS With UserInfo
+* GET ALL LOGS With UserInfo/community
 ============================
  */
 
@@ -158,7 +159,7 @@ Functional but not used.
 =======================
 */
 router.put("/update/:entryId", middleware.validateSession , async (req, res) => {
-    const {description, nameOfBeer, brewery, abv, ibu, style} = req.body.log;
+    const {description, nameOfBeer, brewery, abv, ibu, style, rating} = req.body.log;
     const logId = req.params.entryId;
     const userId = req.user.id;
 
@@ -170,7 +171,7 @@ router.put("/update/:entryId", middleware.validateSession , async (req, res) => 
     };
 
     const updatedLog = {
-        description, nameOfBeer, brewery, abv, ibu, style
+        description, nameOfBeer, brewery, abv, ibu, style, rating
     };
 
     try {
@@ -190,7 +191,7 @@ Functional but not used.
 */
 
 router.put("/admin/:entryId", validateAdmin,  async (req, res) => {
-    const { description, nameOfBeer, brewery, abv, ibu, style } = req.body.log;
+    const { description, nameOfBeer, brewery, abv, ibu, style, rating } = req.body.log;
     const logId = req.params.entryId;
     
     const query = {
@@ -199,7 +200,7 @@ router.put("/admin/:entryId", validateAdmin,  async (req, res) => {
         }
     };
     const updatedLog = {
-        description, nameOfBeer, brewery, abv, ibu, style
+        description, nameOfBeer, brewery, abv, ibu, style, ratingnpm
     };
     try {
         const updateByAdmin = await LogModel.update(updatedLog, query);
@@ -215,7 +216,7 @@ router.put("/admin/:entryId", validateAdmin,  async (req, res) => {
 * DELETE LOGS 
 =======================
 */
-router.delete("/:id", middleware.validateAdmin, async(req, res) =>{
+router.delete("/:id", async(req, res) =>{
     const logId = req.params.id;
     const userId = req.user.id;
 

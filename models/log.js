@@ -26,6 +26,10 @@ const Log = db.define("log", {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    rating: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
 
 });
 

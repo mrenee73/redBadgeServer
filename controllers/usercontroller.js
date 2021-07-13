@@ -86,34 +86,33 @@ router.post("/login", async (req, res) => {
 }
 });
 
-/**
-======================================
-GET ALL USERS FOR COMMUNITY DIRECTORY
-======================================
-Functional but not used.
- */
 
-// router.get('/', async (req, res) =>{
-//     try{
-//         const entries = await UserModel.findAll();
-//         res.status(200).json(entries);
-//     } catch (err) {
-//         res.status(500).json({error: err});
-//     }
-// });
+// ======================================
+// GET ALL USERS FOR COMMUNITY DIRECTORY
+// ======================================
 
 
 
-/**
-==============
-DELETE A USER
-==============
+router.get('/', validateAdmin, async (req, res) =>{
+     try{
+        const entries = await UserModel.findAll();
+         res.status(200).json(entries);
+    } catch (err) {
+       res.status(500).json({error: err});
+    }
+});
 
- */
+
+
+// ==============
+// DELETE A USER
+// ==============
+
+
 
 router.delete("/admin/delete/:userId", validateAdmin, async(req, res) =>{
 
-//    const query =
+
     try {
         const userDeleted = await UserModel.destroy(
     { where: {id: req.params.userId}})

@@ -11,7 +11,7 @@ app.use('/log', controllers.logController);
 
 dbConnection.authenticate()
     .then(() => dbConnection.sync(
-        {force: true}
+        // {force: true}
         
 
         ))
